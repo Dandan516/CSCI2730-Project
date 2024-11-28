@@ -1,0 +1,64 @@
+{
+	"compiler": {
+		"version": "0.8.26+commit.8a97fa7a"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_user",
+						"type": "address"
+					}
+				],
+				"name": "whitelistUser",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/users.sol": "UserPermission"
+		},
+		"evmVersion": "cancun",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/users.sol": {
+			"keccak256": "0xaeb751c4a407f7afff12992309e15bc665b6a0ce4dda3cdb2bfc841e7b0839b0",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://e01592894a2bfc46bdab62f2d3860c5c939502261930eeef6a2fc37756fb54af",
+				"dweb:/ipfs/QmVbHjon1L8Fpavrsw8pF6VP4LPdQiD1RE2CwjaSL53Y4f"
+			]
+		}
+	},
+	"version": 1
+}
