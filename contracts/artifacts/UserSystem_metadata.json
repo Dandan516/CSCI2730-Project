@@ -26,21 +26,8 @@
 						"type": "address"
 					}
 				],
-				"name": "User_whitelisted",
+				"name": "UserAdded",
 				"type": "event"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "string",
-						"name": "_name",
-						"type": "string"
-					}
-				],
-				"name": "change_name",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
 			},
 			{
 				"inputs": [
@@ -50,15 +37,22 @@
 						"type": "address"
 					}
 				],
-				"name": "check_name",
-				"outputs": [
+				"name": "add_user",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
 					{
 						"internalType": "string",
-						"name": "",
+						"name": "_name",
 						"type": "string"
 					}
 				],
-				"stateMutability": "view",
+				"name": "change_username",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -75,13 +69,19 @@
 				"type": "function"
 			},
 			{
-				"inputs": [],
-				"name": "check_whitelist",
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_addr",
+						"type": "address"
+					}
+				],
+				"name": "get_username",
 				"outputs": [
 					{
-						"internalType": "address[]",
+						"internalType": "string",
 						"name": "",
-						"type": "address[]"
+						"type": "string"
 					}
 				],
 				"stateMutability": "view",
@@ -101,16 +101,16 @@
 				"type": "function"
 			},
 			{
-				"inputs": [
+				"inputs": [],
+				"name": "view_whitelist",
+				"outputs": [
 					{
-						"internalType": "address",
-						"name": "_addr",
-						"type": "address"
+						"internalType": "address[]",
+						"name": "",
+						"type": "address[]"
 					}
 				],
-				"name": "whitelist_user",
-				"outputs": [],
-				"stateMutability": "nonpayable",
+				"stateMutability": "view",
 				"type": "function"
 			}
 		],
@@ -127,7 +127,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"contracts/Whitelist.sol": "Whitelist"
+			"contracts/UserSystem.sol": "UserSystem"
 		},
 		"evmVersion": "cancun",
 		"libraries": {},
@@ -181,12 +181,12 @@
 				"dweb:/ipfs/QmVUSvooZKEdEdap619tcJjTLcAuH6QBdZqAzWwnAXZAWJ"
 			]
 		},
-		"contracts/Whitelist.sol": {
-			"keccak256": "0x65012d33da3fa81f19d810a8be241e78facb9310e046a9564ad2be59f3bdd04b",
+		"contracts/UserSystem.sol": {
+			"keccak256": "0xf63623fea8d2f922fa25b299c5f650abf5319477fa171f0b396a002e9c30205b",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://eb5fdce02e146464cc411528d923e6f9e43d81ca60a978dcc8f5b1856be91074",
-				"dweb:/ipfs/QmegUNAUMWnSkrmM56cobTRVBx2YP6rwNPvsx2mpkD3hS5"
+				"bzz-raw://a2edc65e7a4349a5c50d2b9cf4f162b4223601c83e889ab1fc2983ef054d44e4",
+				"dweb:/ipfs/QmR3UUWftxEcuVPWuDyhRhHAwrKXmPGVYbA5buao1Kjmzc"
 			]
 		}
 	},

@@ -3,12 +3,15 @@
 pragma solidity >=0.8.2 <0.9.0;
 
 contract FileStorage {
-    address public owner;
+    address public drive_owner;
 
     struct File {
         string filename;
         string content;
         bool exists;
+        address file_owner;
+        mapping(address => bool) read_access;
+        mapping(address => bool) write_access;
     }
 
     mapping(string => File) private files;
@@ -19,7 +22,7 @@ contract FileStorage {
     event FileDeleted(string filename);
 
     modifier onlyOwner() {
-        require(msg.sender == owner, "Not the contract owner");
+        require(msg.sender == drive_owner, "Not the contract owner");
         _;
     }
 
@@ -29,19 +32,21 @@ contract FileStorage {
     }
 
     constructor() {
-        owner = msg.sender;
+        drive_owner = msg.sender;
     }
 
     // Create a file
-    function createFile(string memory _filename, string memory _content) public onlyOwner {
+    function createFile(string memory _filename, string memory _content) public {
         require(bytes(_filename).length > 0, "Filename cannot be empty");
         require(!files[_filename].exists, "File already exists");
 
-        files[_filename] = File({
-            filename: _filename,
-            content: _content,
-            exists: true
-        });
+        File storage new_file = files[_filename];
+        new_file.filename = _filename;
+        new_file.content = _content;
+        new_file.exists = true;
+        new_file.file_owner = msg.sender;
+        new_file.read_access[msg.sender] = true;
+        new_file.write_access[msg.sender] = true;
 
         // Add to File list
         fileList.push(_filename);
@@ -50,11 +55,13 @@ contract FileStorage {
 
     //Read a file by file name
     function readFile(string memory _filename) public view fileExists(_filename) returns (string memory) {
+        require(files[_filename].read_access[msg.sender], "No read access");
         return files[_filename].content;
     }
 
     //Edit a file
-    function editFile(string memory _filename, string memory _newContent) public onlyOwner fileExists(_filename) {
+    function editFile(string memory _filename, string memory _newContent) public fileExists(_filename) {
+        require(files[_filename].write_access[msg.sender], "No write access");
         files[_filename].content = _newContent;
         emit FileEdited(_filename, _newContent);
     }
@@ -73,6 +80,13 @@ contract FileStorage {
         }
         emit FileDeleted(_filename);
     }
+
+    function viewFilePermission(string memory _filename, address _addr) public view fileExists(_filename) returns (bool[2] memory) {
+        bool read = files[_filename].read_access[_addr];
+        bool write = files[_filename].write_access[_addr];
+        return [read, write];
+    }
+
 
     // List of filenames
     function getFileList() public view returns (string[] memory) {

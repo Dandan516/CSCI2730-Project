@@ -3,7 +3,7 @@
 pragma solidity >=0.8.2 <0.9.0;
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-contract Whitelist {
+contract UserSystem {
     
     struct User {
         address addr;
@@ -33,29 +33,31 @@ contract Whitelist {
         num_of_users = 1;
     }
     
-    event User_whitelisted(address indexed _addr);
+    event UserAdded(address indexed _addr);
 
     // on whitelist, grant read permission to all files
-    function whitelist_user(address _addr) external {
+    function add_user(address _addr) external {
         require(msg.sender == owner.addr, "Only owner can whitelist the user");
         require(!whitelist[_addr], "The address has already been whitelisted");               
         // add user into the users list
-        User storage user = get_user[_addr];
-        user.addr = _addr;
-        user.id = num_of_users;
-        user.name = string.concat("User ", Strings.toString(user.id));
-
+        get_user[_addr] = User({
+            addr: _addr,
+            id: num_of_users,
+            name: string.concat("User ", Strings.toString(num_of_users))
+        });
+        
+        User memory new_user = get_user[_addr];
         whitelist[_addr] = true;
-        by_id[user.id] = user.addr;
-        by_name[user.name] = user.addr;
+        by_id[new_user.id] = new_user.addr;
+        by_name[new_user.name] = new_user.addr;
         num_of_users += 1;
 
-        emit User_whitelisted(_addr);
+        emit UserAdded(_addr);
     }
 
-    function change_name(string memory _name) external {
+    function change_username(string memory _name) external {
         require(by_name[_name] == address(0), "Name not available");
-        require(whitelist[msg.sender], "User not whitelisted");
+        require(whitelist[msg.sender], "User does not exist");
         User storage target = get_user[msg.sender];
         target.name = _name;
     }
@@ -64,7 +66,7 @@ contract Whitelist {
         return owner.addr;
     }
 
-    function check_whitelist() external view returns(address[] memory) {
+    function view_whitelist() external view returns(address[] memory) {
         address[] memory result = new address[](num_of_users);
         result[0] = owner.addr;
         for (uint i = 1; i < num_of_users; i++) {
@@ -73,7 +75,7 @@ contract Whitelist {
         return result;
     }
 
-    function check_name(address _addr) external view returns(string  memory) {
+    function get_username(address _addr) external view returns(string  memory) {
         require(whitelist[_addr], "User not whitelisted");
         return get_user[_addr].name;
     }
