@@ -69,6 +69,34 @@
 						"type": "string"
 					},
 					{
+						"internalType": "address",
+						"name": "_addr",
+						"type": "address"
+					},
+					{
+						"internalType": "bool",
+						"name": "read",
+						"type": "bool"
+					},
+					{
+						"internalType": "bool",
+						"name": "write",
+						"type": "bool"
+					}
+				],
+				"name": "changeFilePermission",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_filename",
+						"type": "string"
+					},
+					{
 						"internalType": "string",
 						"name": "_content",
 						"type": "string"
@@ -94,7 +122,7 @@
 			},
 			{
 				"inputs": [],
-				"name": "drive_owner",
+				"name": "driveOwner",
 				"outputs": [
 					{
 						"internalType": "address",
@@ -124,19 +152,6 @@
 				"type": "function"
 			},
 			{
-				"inputs": [],
-				"name": "getFileList",
-				"outputs": [
-					{
-						"internalType": "string[]",
-						"name": "",
-						"type": "string[]"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
 				"inputs": [
 					{
 						"internalType": "string",
@@ -150,6 +165,19 @@
 						"internalType": "string",
 						"name": "",
 						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "viewFileList",
+				"outputs": [
+					{
+						"internalType": "string[]",
+						"name": "",
+						"type": "string[]"
 					}
 				],
 				"stateMutability": "view",
@@ -208,11 +236,11 @@
 	},
 	"sources": {
 		"contracts/FileStorage.sol": {
-			"keccak256": "0x0a6df2259ec314c6533e058ae28a3b2fd80e3adef608f1f8df7baf387d5b2389",
+			"keccak256": "0xacfe82890870819ca82ba2be912fb06fc7ab73c54b8a2f02bc1d63e63a9f3ed1",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://79e812da30d3887bf35ac79c4409d008ecb990015a23e314102423b94e400da3",
-				"dweb:/ipfs/QmWgN5ebAirRL4hgdVtyDoeG43fTRoWBbpGwNyQPzqAo2F"
+				"bzz-raw://9efe718b29bb8a3cd7dda1f93b0b7aee77c66f1fe28845d69015ddac3d649c8c",
+				"dweb:/ipfs/QmZGNh1oMctykMLHNNguw9GcmPojJC36hkr99SMRzKnRzx"
 			]
 		}
 	},
