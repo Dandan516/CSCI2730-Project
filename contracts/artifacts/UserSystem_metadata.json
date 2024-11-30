@@ -9,7 +9,7 @@
 				"inputs": [
 					{
 						"internalType": "string",
-						"name": "_owner_name",
+						"name": "_ownerName",
 						"type": "string"
 					}
 				],
@@ -32,64 +32,19 @@
 			{
 				"inputs": [
 					{
-						"internalType": "address",
-						"name": "_addr",
-						"type": "address"
-					}
-				],
-				"name": "add_user",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
 						"internalType": "string",
 						"name": "_name",
 						"type": "string"
 					}
 				],
-				"name": "change_username",
+				"name": "changeSelfUsername",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
 				"inputs": [],
-				"name": "check_owner",
-				"outputs": [
-					{
-						"internalType": "address",
-						"name": "",
-						"type": "address"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "_addr",
-						"type": "address"
-					}
-				],
-				"name": "get_username",
-				"outputs": [
-					{
-						"internalType": "string",
-						"name": "",
-						"type": "string"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "num_of_users",
+				"name": "numOfUsers",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -102,7 +57,39 @@
 			},
 			{
 				"inputs": [],
-				"name": "view_whitelist",
+				"name": "viewDriveOwner",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_addr",
+						"type": "address"
+					}
+				],
+				"name": "viewUsername",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "viewWhitelist",
 				"outputs": [
 					{
 						"internalType": "address[]",
@@ -111,6 +98,19 @@
 					}
 				],
 				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_addr",
+						"type": "address"
+					}
+				],
+				"name": "whitelistUser",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			}
 		],
@@ -182,11 +182,11 @@
 			]
 		},
 		"contracts/UserSystem.sol": {
-			"keccak256": "0xf63623fea8d2f922fa25b299c5f650abf5319477fa171f0b396a002e9c30205b",
+			"keccak256": "0x6470787bda99d4353bd12dd4d6cf680daea6409ff733cd004c24d72b786f5839",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://a2edc65e7a4349a5c50d2b9cf4f162b4223601c83e889ab1fc2983ef054d44e4",
-				"dweb:/ipfs/QmR3UUWftxEcuVPWuDyhRhHAwrKXmPGVYbA5buao1Kjmzc"
+				"bzz-raw://44ada8a4c5c204e0a1045f335750bcb0a316a4d3607f2d33934fc4377e00fa7e",
+				"dweb:/ipfs/QmQttMqVJFad1Dkd23cJGbKUAkrztq2spJ317xU3TnUaDB"
 			]
 		}
 	},

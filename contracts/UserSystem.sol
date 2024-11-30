@@ -3,6 +3,7 @@
 pragma solidity >=0.8.2 <0.9.0;
 import "@openzeppelin/contracts/utils/Strings.sol";
 
+
 contract UserSystem {
     
     struct User {
@@ -11,73 +12,73 @@ contract UserSystem {
         string name;
     }
 
-    User owner;
-    User[] users;
+    User driveOwner;
+    User[] userList;
 
-    mapping(address => User) get_user;
-    mapping(address => bool) whitelist;
-    mapping(uint => address) by_id;
-    mapping(string => address) by_name;
+    mapping(address => User) private users;
+    mapping(address => bool) private whitelist;
+    mapping(uint => address) private by_id;
+    mapping(string => address) private by_name;
 
-    uint public num_of_users;
-    
-    constructor(string memory _owner_name) {
-        owner.addr = msg.sender;
-        owner.id = 0;
-        owner.name = _owner_name;
+    uint public numOfUsers;
 
-        get_user[msg.sender] = owner;
-        whitelist[owner.addr] = true;
-        by_id[owner.id] = owner.addr;
-        by_name[owner.name] = owner.addr;
-        num_of_users = 1;
-    }
-    
     event UserAdded(address indexed _addr);
+    
+    constructor(string memory _ownerName) {
+        driveOwner.addr = msg.sender;
+        driveOwner.id = 0;
+        driveOwner.name = _ownerName;
+
+        users[msg.sender] = driveOwner;
+        whitelist[driveOwner.addr] = true;
+        by_id[driveOwner.id] = driveOwner.addr;
+        by_name[driveOwner.name] = driveOwner.addr;
+        numOfUsers = 1;
+    }
 
     // on whitelist, grant read permission to all files
-    function add_user(address _addr) external {
-        require(msg.sender == owner.addr, "Only owner can whitelist the user");
+    function whitelistUser(address _addr) external {
+        require(msg.sender == driveOwner.addr, "Only driveOwner can whitelist the user");
         require(!whitelist[_addr], "The address has already been whitelisted");               
-        // add user into the users list
-        get_user[_addr] = User({
+        // add user into the userList list
+        users[_addr] = User({
             addr: _addr,
-            id: num_of_users,
-            name: string.concat("User ", Strings.toString(num_of_users))
+            id: numOfUsers,
+            name: string.concat("User ", Strings.toString(numOfUsers))
         });
         
-        User memory new_user = get_user[_addr];
+        User memory newUser = users[_addr];
         whitelist[_addr] = true;
-        by_id[new_user.id] = new_user.addr;
-        by_name[new_user.name] = new_user.addr;
-        num_of_users += 1;
+        by_id[newUser.id] = newUser.addr;
+        by_name[newUser.name] = newUser.addr;
+        numOfUsers += 1;
 
         emit UserAdded(_addr);
     }
 
-    function change_username(string memory _name) external {
+    function changeSelfUsername(string memory _name) external {
         require(by_name[_name] == address(0), "Name not available");
         require(whitelist[msg.sender], "User does not exist");
-        User storage target = get_user[msg.sender];
+        User storage target = users[msg.sender];
         target.name = _name;
     }
 
-    function check_owner() external view returns(address) {
-        return owner.addr;
+    function viewDriveOwner() external view returns(address) {
+        return driveOwner.addr;
     }
 
-    function view_whitelist() external view returns(address[] memory) {
-        address[] memory result = new address[](num_of_users);
-        result[0] = owner.addr;
-        for (uint i = 1; i < num_of_users; i++) {
-            result[i] = get_user[by_id[i]].addr;
+    function viewWhitelist() external view returns(address[] memory) {
+        address[] memory result = new address[](numOfUsers);
+        result[0] = driveOwner.addr;
+        for (uint i = 1; i < numOfUsers; i++) {
+            result[i] = users[by_id[i]].addr;
         }
         return result;
     }
 
-    function get_username(address _addr) external view returns(string  memory) {
+    function viewUsername(address _addr) external view returns(string  memory) {
         require(whitelist[_addr], "User not whitelisted");
-        return get_user[_addr].name;
+        return users[_addr].name;
     }
 
 }
