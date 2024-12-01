@@ -6,9 +6,23 @@
 	"output": {
 		"abi": [
 			{
-				"inputs": [],
-				"stateMutability": "nonpayable",
-				"type": "constructor"
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "filename",
+						"type": "string"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "newContent",
+						"type": "string"
+					}
+				],
+				"name": "AppendedToFile",
+				"type": "event"
 			},
 			{
 				"anonymous": false,
@@ -54,12 +68,49 @@
 					{
 						"indexed": false,
 						"internalType": "string",
-						"name": "content",
+						"name": "newContent",
 						"type": "string"
 					}
 				],
-				"name": "FileEdited",
+				"name": "FileWritten",
 				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "filename",
+						"type": "string"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "newName",
+						"type": "string"
+					}
+				],
+				"name": "FilenameChanged",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_filename",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_newContent",
+						"type": "string"
+					}
+				],
+				"name": "appendToFile",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
 			},
 			{
 				"inputs": [
@@ -74,14 +125,9 @@
 						"type": "address"
 					},
 					{
-						"internalType": "bool",
-						"name": "read",
-						"type": "bool"
-					},
-					{
-						"internalType": "bool",
-						"name": "write",
-						"type": "bool"
+						"internalType": "uint8",
+						"name": "_mode",
+						"type": "uint8"
 					}
 				],
 				"name": "changeFilePermission",
@@ -121,12 +167,33 @@
 				"type": "function"
 			},
 			{
-				"inputs": [],
-				"name": "driveOwner",
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"name": "files",
 				"outputs": [
 					{
+						"internalType": "string",
+						"name": "filename",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "content",
+						"type": "string"
+					},
+					{
+						"internalType": "bool",
+						"name": "exists",
+						"type": "bool"
+					},
+					{
 						"internalType": "address",
-						"name": "",
+						"name": "fileOwner",
 						"type": "address"
 					}
 				],
@@ -134,21 +201,16 @@
 				"type": "function"
 			},
 			{
-				"inputs": [
+				"inputs": [],
+				"name": "listFiles",
+				"outputs": [
 					{
-						"internalType": "string",
-						"name": "_filename",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "_newContent",
-						"type": "string"
+						"internalType": "string[]",
+						"name": "",
+						"type": "string[]"
 					}
 				],
-				"name": "editFile",
-				"outputs": [],
-				"stateMutability": "nonpayable",
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -171,16 +233,21 @@
 				"type": "function"
 			},
 			{
-				"inputs": [],
-				"name": "viewFileList",
-				"outputs": [
+				"inputs": [
 					{
-						"internalType": "string[]",
-						"name": "",
-						"type": "string[]"
+						"internalType": "string",
+						"name": "_oldName",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_newName",
+						"type": "string"
 					}
 				],
-				"stateMutability": "view",
+				"name": "renameFile",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -199,12 +266,30 @@
 				"name": "viewFilePermission",
 				"outputs": [
 					{
-						"internalType": "bool[2]",
+						"internalType": "string",
 						"name": "",
-						"type": "bool[2]"
+						"type": "string"
 					}
 				],
 				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_filename",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_newContent",
+						"type": "string"
+					}
+				],
+				"name": "writeFile",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			}
 		],
@@ -236,11 +321,11 @@
 	},
 	"sources": {
 		"contracts/FileStorage.sol": {
-			"keccak256": "0xacfe82890870819ca82ba2be912fb06fc7ab73c54b8a2f02bc1d63e63a9f3ed1",
+			"keccak256": "0x9ea73cca407eb469bbfbd12b4a7071b9ce0b381ef2e162f3ee8398ce04316c88",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://9efe718b29bb8a3cd7dda1f93b0b7aee77c66f1fe28845d69015ddac3d649c8c",
-				"dweb:/ipfs/QmZGNh1oMctykMLHNNguw9GcmPojJC36hkr99SMRzKnRzx"
+				"bzz-raw://a5db5868c0d63cc9927d399387557048d793a5641d18aa04ada25b0274bfe0db",
+				"dweb:/ipfs/QmXmUC6ZgQdFUAAKjxVqDWmQcatCRNj87dVHgSmu643tRY"
 			]
 		}
 	},

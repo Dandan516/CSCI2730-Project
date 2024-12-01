@@ -14,6 +14,45 @@
 				"anonymous": false,
 				"inputs": [
 					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "directoryName",
+						"type": "string"
+					}
+				],
+				"name": "DirectoryCreated",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "directoryName",
+						"type": "string"
+					}
+				],
+				"name": "DirectoryDeleted",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "directoryName",
+						"type": "string"
+					}
+				],
+				"name": "DirectoryRenamed",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
 						"indexed": true,
 						"internalType": "address",
 						"name": "_addr",
@@ -71,6 +110,19 @@
 			{
 				"inputs": [
 					{
+						"internalType": "uint256",
+						"name": "_directoryId",
+						"type": "uint256"
+					}
+				],
+				"name": "changeDirectory",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
 						"internalType": "string",
 						"name": "_newName",
 						"type": "string"
@@ -84,12 +136,38 @@
 			{
 				"inputs": [
 					{
+						"internalType": "string",
+						"name": "_directoryName",
+						"type": "string"
+					}
+				],
+				"name": "createDirectory",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
 						"internalType": "address",
 						"name": "_addr",
 						"type": "address"
 					}
 				],
 				"name": "removeUser",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_newName",
+						"type": "string"
+					}
+				],
+				"name": "renameDirectory",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -166,7 +244,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"contracts/UserSystem.sol": "UserSystem"
+			"contracts/FileSystem.sol": "FileSystem"
 		},
 		"evmVersion": "cancun",
 		"libraries": {},
@@ -220,12 +298,28 @@
 				"dweb:/ipfs/QmVUSvooZKEdEdap619tcJjTLcAuH6QBdZqAzWwnAXZAWJ"
 			]
 		},
-		"contracts/UserSystem.sol": {
-			"keccak256": "0x57fad4450189bc725e95b5ad1c2e7fa02424be7f213962ddfbdada130754bf8a",
+		"contracts/FileStorage.sol": {
+			"keccak256": "0x4d90d5e1e317cf5a09f8ef0321ed96d081d008f51734e7cc14590d937b67cf69",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://88b835e58aac94bbdeba5420da6df30aa31749fb4646622551f45032eee2dc54",
-				"dweb:/ipfs/QmSAqFoWvZCnBZD9x9ffSwHRNyPrAVfbygwSa4t4NHmfLB"
+				"bzz-raw://90802202dc2cb197258fdc70825ecdca6e1567d3cca8230ea85a4aa7e21560c2",
+				"dweb:/ipfs/QmTiHobALuz7NsYJ3Y3wmjVJ9CeHLrPvhP8EtSDoHdy2iv"
+			]
+		},
+		"contracts/FileSystem.sol": {
+			"keccak256": "0xd9cc460a56192967da76c487e4dfd7202de2b7317a36ce20c7e368122d0b1339",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://b4baa3c74ed7a2d890a563e3ab4221a403947db83c58762e0ca182da81575deb",
+				"dweb:/ipfs/QmYTsC1HcDJcDCh9zAfhJ7mUi5BzqNpnsPrLj9ybt5RpFU"
+			]
+		},
+		"contracts/UserSystem.sol": {
+			"keccak256": "0x593a9f7c82d4d7d66b3a3f600c6e6d728ea27378083f624860b116e6bb19bdca",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://5babaa31d77ee0f2a57729b43c3e984d6751a071f15f286592c3b387a3e503e1",
+				"dweb:/ipfs/QmbLX8co8cv8dJevUVmcuf9XfSNGtoVRv5bgg8aKij3zMs"
 			]
 		}
 	},
