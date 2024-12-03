@@ -111,7 +111,7 @@ contract FileSystem is UserSystem {
         for (uint i = 0; i < currentDir.children.length; i++) {
             ret[0][i] = directories[currentDir.children[i]].directoryName;
         }
-        ret[1] = currentDir.currentFiles.listFiles();
+        ret[1] = currentDir.currentFiles.getFileList();
         return ret;
     }
     
