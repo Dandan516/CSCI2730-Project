@@ -12,7 +12,7 @@ contract FileSystem is UserSystem {
     uint16 private constant MAX_DIRS = 10;
 
     struct Directory {
-        string directoryName;
+        string dirName;
         uint id;
         bool exists;
         uint parent;
@@ -26,35 +26,35 @@ contract FileSystem is UserSystem {
 
     Directory root;
     Directory currentDir;
-    mapping(uint => Directory) directories;
+    mapping(uint => Directory) dirs;
 
     constructor(string memory _driveName) {
         driveName = _driveName;
         root = Directory({
-            directoryName: "/",
+            dirName: "/",
             id: 0,
             exists: true,
             parent: 0,
-            children: new uint[](MAX_DIRS),
+            children: new uint[](0),
             currentFiles: new FileStorage()
         });
         currentDir = root;
-        directories[0] = root;
+        dirs[0] = root;
         globalDirCount = 1;
     }
 
-    event DirectoryCreated(string directoryName);
-    event DirectoryRenamed(string directoryName);
-    event DirectoryDeleted(string directoryName);
+    event DirectoryCreated(string dirName);
+    event DirectoryRenamed(string dirName);
+    event DirectoryDeleted(string dirName);
 
     // check if the directory name is available in the parent directory
-    modifier directoryNameAvailable(string memory _newName) {
-        uint[] memory siblings = directories[currentDir.parent].children;
+    modifier dirNameAvailable(string memory _newName) {
+        uint[] memory siblings = dirs[currentDir.parent].children;
         string memory siblingName;
         bool nameAvailable = true;
         
         for (uint i = 0; i < siblings.length; i++) {
-            siblingName = directories[siblings[i]].directoryName;
+            siblingName = dirs[siblings[i]].dirName;
             if (keccak256(abi.encodePacked(siblingName)) == keccak256(abi.encodePacked(_newName))) {
                 nameAvailable = false;
                 break;
@@ -76,43 +76,50 @@ contract FileSystem is UserSystem {
     }
 
     
-    function createDirectory(string memory _directoryName) notExceedGlobalFileLimit external {
-        directories[globalDirCount] = Directory({
-            directoryName: _directoryName,
+    function createDir(string memory _dirName) notExceedGlobalFileLimit external {
+        dirs[globalDirCount] = Directory({
+            dirName: _dirName,
             id: globalDirCount,
             exists: true,
             parent: currentDir.id,
-            children: new uint[](MAX_DIRS),
+            children: new uint[](0),
             currentFiles: new FileStorage()
         });
+        dirs[currentDir.id].children.push(globalDirCount);
+        currentDir = dirs[currentDir.id];
         globalDirCount++;
     }
 
-    // rename current directory 
-    function renameDirectory(string memory _newName) external directoryNameAvailable(_newName) {   
-        currentDir.directoryName = _newName;
+    // rename current directory
+    // maybe dont have to be curent directory?
+    function renameDir(string memory _newName) external dirNameAvailable(_newName) {   
+        dirs[currentDir.id].dirName = _newName;
         emit DirectoryRenamed(_newName);
     }
 
     // change to another directory
-    function changeDirectory(uint _directoryId) external {
-        currentDir = directories[_directoryId];
+    function changeDir(uint _dirId) external {
+        require(dirs[_dirId].exists, "Invalid directory id");
+        currentDir = dirs[_dirId];
     }
 
     // create file using FileStorage.createFile
     function createFile(string memory _filename, string memory _content) external {
-        currentDir.currentFiles.createFile(_filename, _content);
+        dirs[currentDir.id].currentFiles.createFile(_filename, _content);
     }
 
-    // not working, plz make it work
-    // list directory, ret[0] are directories, ret[1] are files
-    function listDirectory() external view returns(string[][] memory) {
-        string[][] memory ret;
+    // list directory
+    function listDir() external view returns(string[][2] memory) {
+        string[] memory childDirList = new string[](currentDir.children.length);
         for (uint i = 0; i < currentDir.children.length; i++) {
-            ret[0][i] = directories[currentDir.children[i]].directoryName;
+            childDirList[i] = dirs[currentDir.children[i]].dirName;
         }
-        ret[1] = currentDir.currentFiles.getFileList();
-        return ret;
+        string[] memory childFileList = currentDir.currentFiles.getFileList();
+        return [childDirList, childFileList];
     }
-    
+
+    function viewCurrentDirName() external view returns(string memory) {
+        return currentDir.dirName;
+    }
+
 }
