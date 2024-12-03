@@ -22,7 +22,7 @@
 					{
 						"indexed": false,
 						"internalType": "string",
-						"name": "directoryName",
+						"name": "dirName",
 						"type": "string"
 					}
 				],
@@ -35,7 +35,7 @@
 					{
 						"indexed": false,
 						"internalType": "string",
-						"name": "directoryName",
+						"name": "dirName",
 						"type": "string"
 					}
 				],
@@ -48,7 +48,7 @@
 					{
 						"indexed": false,
 						"internalType": "string",
-						"name": "directoryName",
+						"name": "dirName",
 						"type": "string"
 					}
 				],
@@ -117,11 +117,11 @@
 				"inputs": [
 					{
 						"internalType": "uint256",
-						"name": "_directoryId",
+						"name": "_dirId",
 						"type": "uint256"
 					}
 				],
-				"name": "changeDirectory",
+				"name": "changeDir",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -143,11 +143,11 @@
 				"inputs": [
 					{
 						"internalType": "string",
-						"name": "_directoryName",
+						"name": "_dirName",
 						"type": "string"
 					}
 				],
-				"name": "createDirectory",
+				"name": "createDir",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -172,12 +172,12 @@
 			},
 			{
 				"inputs": [],
-				"name": "listDirectory",
+				"name": "listDir",
 				"outputs": [
 					{
-						"internalType": "string[][]",
+						"internalType": "string[][2]",
 						"name": "",
-						"type": "string[][]"
+						"type": "string[][2]"
 					}
 				],
 				"stateMutability": "view",
@@ -204,9 +204,22 @@
 						"type": "string"
 					}
 				],
-				"name": "renameDirectory",
+				"name": "renameDir",
 				"outputs": [],
 				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "viewCurrentDirName",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -344,11 +357,11 @@
 			]
 		},
 		"contracts/FileSystem.sol": {
-			"keccak256": "0xe9293c38008909e7d6612d507ac6ba62db13cd2bceb1f56c9b7a390bd86064ee",
+			"keccak256": "0x224cf2955b8828469c9e0d29454b135a4eb6e4635058d94dc93c99b6ab0d1aed",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://55d11f9e75ce3dc8e792d04b4c74e4220f53f0be5bb0ba6a7c9e81b34a79b06f",
-				"dweb:/ipfs/QmajwpgcXLa7KkpWU11Thrb1phvNc1ZweqFbePyAfA25D6"
+				"bzz-raw://34b89f6134969afcc4cb4b0ecedc0ec23b049884916226d0298b8e557df294e8",
+				"dweb:/ipfs/QmXZfnuqioyj3DBLJ8WxMXerhgRqSDZRuUzo5Y25G3PtWh"
 			]
 		},
 		"contracts/UserSystem.sol": {
