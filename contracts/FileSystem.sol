@@ -50,6 +50,7 @@ contract FileSystem is UserSystem() {
     event AppendedToFile(string filename, string newContent);
     event FileWritten(string filename, string newContent);
     event FileDeleted(string filename);
+    event FilePermissionChanged(string filename, address addr, uint8 mode);
 
     // check if the directory name is available in the parent directory
     modifier dirNameAvailable(string memory _newName) {
@@ -169,6 +170,15 @@ contract FileSystem is UserSystem() {
 
     function viewCurrentDirName() external view returns(string memory) {
         return currentDir.dirName;
+    }
+
+    function changeFilePermission(string memory _filename, address _addr, uint8 _mode) external {
+        currentDir.currentFiles.changeFilePermission(_filename, _addr, _mode);
+        emit FilePermissionChanged(_filename, _addr, _mode); // Emit event for permission change
+    }
+
+    function viewFilePermission(string memory _filename, address _addr) external view returns (string memory) {
+        return currentDir.currentFiles.viewFilePermission(_filename, _addr);
     }
 
 }
