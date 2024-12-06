@@ -23,6 +23,7 @@ contract FileSystem is UserSystem() {
     uint globalFileCount;
     uint globalDirCount;
     string driveName;
+    address fileowner;
     Directory root;
     Directory currentDir;
     mapping(uint => Directory) dirs;
@@ -89,6 +90,11 @@ contract FileSystem is UserSystem() {
         _;
     }
 
+    modifier onlyOwner() {
+        require(msg.sender == fileowner, "Caller is not the file owner");
+        _;
+    }
+
     modifier notExceedGlobalFileLimit() {
         require(globalFileCount < MAX_GLOBAL_FILES, "Exceeded global file limit");
         _;
@@ -130,11 +136,15 @@ contract FileSystem is UserSystem() {
     function createFile(string memory _filename, string memory _content) external {
         currentDir.currentFiles.createFile(_filename, _content);
         dirs[currentDir.id] = currentDir;
+        fileowner =  msg.sender;
+        currentDir.currentFiles.changeFilePermission(_filename, msg.sender, 3);
         emit FileCreated(_filename, _content);
     }
 
     // append to file using FileStorage.appendToFile
     function appendToFile(string memory _filename, string memory _newContent) external {
+        uint8 access = currentDir.currentFiles.returnmode(_filename, msg.sender);
+        require(access >= 2 || fileowner == msg.sender, "No append access");
         currentDir.currentFiles.appendToFile(_filename, _newContent);
         dirs[currentDir.id] = currentDir;
         emit AppendedToFile(_filename, _newContent);
@@ -142,12 +152,15 @@ contract FileSystem is UserSystem() {
 
     // append to file using FileStorage.writeFile
     function writeToFile(string memory _filename, string memory _newContent) external {
+        uint8 access = currentDir.currentFiles.returnmode(_filename, msg.sender);
+        require(access >= 3 || fileowner == msg.sender, "No write access");
         currentDir.currentFiles.writeFile(_filename, _newContent);
         dirs[currentDir.id] = currentDir;
         emit FileWritten(_filename, _newContent);
     }
 
     function deleteFile(string memory _filename) external {
+        require(fileowner == msg.sender, "Only file owner can delete file");
         currentDir.currentFiles.deleteFile(_filename);
         dirs[currentDir.id] = currentDir;
         emit FileDeleted(_filename);
@@ -155,6 +168,8 @@ contract FileSystem is UserSystem() {
     
     // read file using FileStorage.readFile
     function readFile(string memory _filename) external view returns(string memory) {
+        uint8 access = currentDir.currentFiles.returnmode(_filename, msg.sender);
+        require(access >= 1 || fileowner == msg.sender, "No read access");
         return currentDir.currentFiles.readFile(_filename);
     }
 
@@ -172,7 +187,7 @@ contract FileSystem is UserSystem() {
         return currentDir.dirName;
     }
 
-    function changeFilePermission(string memory _filename, address _addr, uint8 _mode) external {
+    function changeFilePermission(string memory _filename, address _addr, uint8 _mode) external onlyOwner{
         currentDir.currentFiles.changeFilePermission(_filename, _addr, _mode);
         emit FilePermissionChanged(_filename, _addr, _mode); // Emit event for permission change
     }
