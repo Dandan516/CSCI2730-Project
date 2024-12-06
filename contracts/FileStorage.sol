@@ -115,5 +115,8 @@ contract FileStorage {
         return fileList;
     }
 
+    function returnmode (string memory _filename, address _addr) external view fileExists(_filename) returns (uint8) {  
+        return files[_filename].mode[_addr];
+    }
     
 }
