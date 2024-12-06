@@ -16,7 +16,7 @@
 					{
 						"indexed": true,
 						"internalType": "address",
-						"name": "_addr",
+						"name": "addr",
 						"type": "address"
 					}
 				],
@@ -42,7 +42,7 @@
 					{
 						"indexed": true,
 						"internalType": "address",
-						"name": "_addr",
+						"name": "addr",
 						"type": "address"
 					},
 					{
@@ -52,7 +52,7 @@
 						"type": "string"
 					}
 				],
-				"name": "UsernameChanged",
+				"name": "UserRenamed",
 				"type": "event"
 			},
 			{
@@ -69,16 +69,59 @@
 				"type": "function"
 			},
 			{
-				"inputs": [
+				"inputs": [],
+				"name": "currentUser",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "addr",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					},
 					{
 						"internalType": "string",
-						"name": "_newName",
+						"name": "username",
 						"type": "string"
+					},
+					{
+						"internalType": "bool",
+						"name": "exists",
+						"type": "bool"
 					}
 				],
-				"name": "changeSelfUsername",
-				"outputs": [],
-				"stateMutability": "nonpayable",
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "driveOwner",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "addr",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "username",
+						"type": "string"
+					},
+					{
+						"internalType": "bool",
+						"name": "exists",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -95,21 +138,21 @@
 				"type": "function"
 			},
 			{
-				"inputs": [],
-				"name": "viewDriveOwner",
-				"outputs": [
+				"inputs": [
 					{
-						"internalType": "address",
-						"name": "",
-						"type": "address"
+						"internalType": "string",
+						"name": "_newName",
+						"type": "string"
 					}
 				],
-				"stateMutability": "view",
+				"name": "renameSelf",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
 				"inputs": [],
-				"name": "viewNumOfUsers",
+				"name": "userCount",
 				"outputs": [
 					{
 						"internalType": "uint256",
@@ -124,16 +167,31 @@
 				"inputs": [
 					{
 						"internalType": "address",
-						"name": "_addr",
+						"name": "",
 						"type": "address"
 					}
 				],
-				"name": "viewUsername",
+				"name": "users",
 				"outputs": [
 					{
+						"internalType": "address",
+						"name": "addr",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					},
+					{
 						"internalType": "string",
-						"name": "",
+						"name": "username",
 						"type": "string"
+					},
+					{
+						"internalType": "bool",
+						"name": "exists",
+						"type": "bool"
 					}
 				],
 				"stateMutability": "view",
@@ -141,12 +199,34 @@
 			},
 			{
 				"inputs": [],
-				"name": "viewWhitelist",
+				"name": "viewUserList",
 				"outputs": [
 					{
-						"internalType": "address[]",
+						"components": [
+							{
+								"internalType": "address",
+								"name": "addr",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "id",
+								"type": "uint256"
+							},
+							{
+								"internalType": "string",
+								"name": "username",
+								"type": "string"
+							},
+							{
+								"internalType": "bool",
+								"name": "exists",
+								"type": "bool"
+							}
+						],
+						"internalType": "struct UserSystem.User[]",
 						"name": "",
-						"type": "address[]"
+						"type": "tuple[]"
 					}
 				],
 				"stateMutability": "view",
@@ -221,11 +301,11 @@
 			]
 		},
 		"contracts/UserSystem.sol": {
-			"keccak256": "0x57fad4450189bc725e95b5ad1c2e7fa02424be7f213962ddfbdada130754bf8a",
+			"keccak256": "0x078891ac04ffbce8612ea3b777ba5c0fd43bef49301206de6c9f129e3972b38b",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://88b835e58aac94bbdeba5420da6df30aa31749fb4646622551f45032eee2dc54",
-				"dweb:/ipfs/QmSAqFoWvZCnBZD9x9ffSwHRNyPrAVfbygwSa4t4NHmfLB"
+				"bzz-raw://5953c746f1b22842cc2f09876eac338ab788e0614308564adff504cc15294fa8",
+				"dweb:/ipfs/QmXRco6K5rEbX72AqyBef7P7NvurhoKaSV7NczFdrN9P7M"
 			]
 		}
 	},

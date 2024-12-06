@@ -5,7 +5,7 @@ pragma solidity >=0.8.2 <0.9.0;
 import "contracts/FileStorage.sol";
 import "contracts/UserSystem.sol";
 
-contract FileSystem is UserSystem {
+contract FileSystem is UserSystem() {
 
     uint16 private constant MAX_GLOBAL_FILES = 1000;
     uint16 private constant MAX_GLOBAL_DIRS = 1000;
@@ -17,13 +17,12 @@ contract FileSystem is UserSystem {
         bool exists;
         uint parent;
         uint[] children;
-        FileStorage files;
+        FileStorage currentFiles;
     }
     
     uint globalFileCount;
     uint globalDirCount;
     string driveName;
-
     Directory root;
     Directory currentDir;
     mapping(uint => Directory) dirs;
@@ -36,7 +35,7 @@ contract FileSystem is UserSystem {
             exists: true,
             parent: 0,
             children: new uint[](0),
-            files: new FileStorage()
+            currentFiles: new FileStorage()
         });
         currentDir = root;
         dirs[0] = root;
@@ -47,15 +46,18 @@ contract FileSystem is UserSystem {
     event DirectoryRenamed(string dirName);
     event DirectoryDeleted(string dirName);
     event FileCreated(string filename, string content);
-    event FileEdited(string filename, string content);
+    event FileRenamed(string filename, string newName);
+    event AppendedToFile(string filename, string newContent);
+    event FileWritten(string filename, string newContent);
     event FileDeleted(string filename);
 
     // check if the directory name is available in the parent directory
     modifier dirNameAvailable(string memory _newName) {
         uint[] memory siblings = dirs[currentDir.parent].children;
         string memory siblingName;
+        bytes memory b = bytes(_newName);
+
         bool nameAvailable = true;
-        
         for (uint i = 0; i < siblings.length; i++) {
             siblingName = dirs[siblings[i]].dirName;
             if (keccak256(abi.encodePacked(siblingName)) == keccak256(abi.encodePacked(_newName))) {
@@ -63,8 +65,26 @@ contract FileSystem is UserSystem {
                 break;
             }
         }
-
         require(nameAvailable, "Name not available");
+
+        require(b.length > 0 && b.length <= 30, "Length of name should be between 1 to 30 characters");
+
+        bool onlyAlphaNumeric = true;
+        for (uint i = 0; i < b.length; i++) {
+            bytes1 char = b[i];
+            if (
+                !(char >= 0x30 && char <= 0x39) && //0-9
+                !(char >= 0x41 && char <= 0x5A) && //A-Z
+                !(char >= 0x61 && char <= 0x7A) && //a-z
+                !(char == 0x5F) && //_
+                !(char == 0x20) // whitespace
+            ) 
+            {
+                onlyAlphaNumeric = false;
+                break;
+            }
+        }
+        require(onlyAlphaNumeric == true, "Name should only contain alphanumeric characters, whitespaces or underscores");
         _;
     }
 
@@ -85,7 +105,7 @@ contract FileSystem is UserSystem {
             exists: true,
             parent: currentDir.id,
             children: new uint[](0),
-            files: new FileStorage()
+            currentFiles: new FileStorage()
         });
         dirs[currentDir.id].children.push(globalDirCount);
         currentDir = dirs[currentDir.id];
@@ -107,23 +127,34 @@ contract FileSystem is UserSystem {
 
     // create file using FileStorage.createFile
     function createFile(string memory _filename, string memory _content) external {
-        currentDir.files.createFile(_filename, _content);
+        currentDir.currentFiles.createFile(_filename, _content);
         dirs[currentDir.id] = currentDir;
         emit FileCreated(_filename, _content);
     }
 
-    // append to file using FileStorage.readFile
-    function appendToFile(string memory _filename) external returns(string memory) {
-        currentDir.files.readFile(_filename);
+    // append to file using FileStorage.appendToFile
+    function appendToFile(string memory _filename, string memory _newContent) external {
+        currentDir.currentFiles.appendToFile(_filename, _newContent);
         dirs[currentDir.id] = currentDir;
+        emit AppendedToFile(_filename, _newContent);
     }
 
+    // append to file using FileStorage.writeFile
+    function writeToFile(string memory _filename, string memory _newContent) external {
+        currentDir.currentFiles.writeFile(_filename, _newContent);
+        dirs[currentDir.id] = currentDir;
+        emit FileWritten(_filename, _newContent);
+    }
 
-
+    function deleteFile(string memory _filename) external {
+        currentDir.currentFiles.deleteFile(_filename);
+        dirs[currentDir.id] = currentDir;
+        emit FileDeleted(_filename);
+    }
+    
     // read file using FileStorage.readFile
     function readFile(string memory _filename) external view returns(string memory) {
-        currentDir.files.readFile(_filename);
-        dirs[currentDir.id] = currentDir;
+        return currentDir.currentFiles.readFile(_filename);
     }
 
     // list directory
@@ -132,7 +163,7 @@ contract FileSystem is UserSystem {
         for (uint i = 0; i < currentDir.children.length; i++) {
             childDirList[i] = dirs[currentDir.children[i]].dirName;
         }
-        string[] memory childFileList = currentDir.files.getFileList();
+        string[] memory childFileList = currentDir.currentFiles.listFiles();
         return [childDirList, childFileList];
     }
 

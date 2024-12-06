@@ -1,34 +1,32 @@
 // SPDX-License-Identifier: GPL-3.0
 
 pragma solidity >=0.8.2 <0.9.0;
-
 import "@openzeppelin/contracts/utils/Strings.sol";
 
 contract UserSystem {
-
-    uint16 private constant MAX_USERS = 20;
     
     struct User {
         address addr;
-        uint16 id;
+        uint id;
         string username;
         bool exists;
     }
 
-    User driveOwner;
-    uint16 userCount;
-    uint16 idCount;
+    User public driveOwner;
+    User public currentUser;
+    uint public userCount;
+    uint internal idCount;
+    mapping(address => User) public users;
+    mapping(uint => address) internal byId;
+    mapping(string => address) internal byName;
 
-    mapping(address => User) users;
-    mapping(uint16 => address) byId;
-    mapping(string => address) byName;
-
-    event UserAdded(address indexed _addr);
-    event UsernameChanged(address indexed _addr, string newName);
+    event UserAdded(address indexed addr);
+    event UserRenamed(address indexed addr, string newName);
     event UserRemoved(address indexed _addr);
 
+
     modifier onlyDriveOwner() {
-        require(msg.sender == driveOwner.addr, "Only the drive owner can do this");
+        require(msg.sender == driveOwner.addr, "You are not the drive owner");
         _;
     }
 
@@ -37,12 +35,6 @@ contract UserSystem {
         _;
     }
 
-    modifier notExceedUserLimit {
-        require(userCount < MAX_USERS, "Exceeded user limit");
-        _;
-    }
-
-    // add drive owner to users[]
     constructor() {
         driveOwner = User({
             addr: msg.sender,
@@ -57,9 +49,10 @@ contract UserSystem {
         idCount = 1;
     }
 
-    // add user to users[]
-    function addUser(address _addr) onlyDriveOwner external {
-        require(!users[_addr].exists, "User already exists");
+    // on whitelist, grant read permission to all files
+    function addUser(address _addr) external {
+        require(!users[_addr].exists, "User already exists");               
+        // add user into the userList list
         User memory newUser = User({
             addr: _addr,
             id: idCount,
@@ -67,20 +60,19 @@ contract UserSystem {
             exists: true
         });
         users[_addr] = newUser;
-        byId[newUser.id] = _addr;
-        byName[newUser.username] = _addr;
+        byId[newUser.id] = newUser.addr;
+        byName[newUser.username] = newUser.addr;
         userCount += 1;
         idCount += 1;
-
         emit UserAdded(_addr);
     }
 
-    function changeSelfUsername(string memory _newName) external {
+    function renameSelf(string memory _newName) external {
         require(byName[_newName] == address(0), "Name not available");
-        delete byName[users[msg.sender].username];
+        string memory _oldName = users[msg.sender].username;
         users[msg.sender].username = _newName;
-
-        emit UsernameChanged(msg.sender, _newName);
+        delete byName[_oldName];
+        emit UserRenamed(msg.sender, _newName);
     }
 
     function removeUser(address _addr) onlyDriveOwner userExists(_addr) external {
@@ -89,32 +81,15 @@ contract UserSystem {
         delete byName[users[_addr].username];
         delete users[_addr];
         userCount -= 1;
-        
         emit UserRemoved(_addr);
     }
 
-    // view the address of the drive owner
-    function viewDriveOwner() external view returns(address) {
-        return driveOwner.addr;
-    }
-
-    // view the number of users
-    function viewNumOfUsers() external view returns(uint) {
-        return userCount;
-    }
-
-    // view the whitelisted addresses
-    function viewWhitelist() external view returns(address[] memory) {
-        address[] memory result = new address[](userCount);
-        for (uint8 i = 0; i < userCount; i++) {
-            result[i] = byId[i];
+    function viewUserList() external view returns(User[] memory) {
+        User[] memory result = new User[](userCount);
+        for (uint i = 0; i < userCount; i++) {
+            result[i] = users[byId[i]];
         }
         return result;
-    }
-
-    // view username of the address
-    function viewUsername(address _addr) userExists(_addr) external view returns(string memory) {
-        return users[_addr].username;
     }
 
 }

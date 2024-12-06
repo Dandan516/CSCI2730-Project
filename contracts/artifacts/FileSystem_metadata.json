@@ -22,6 +22,25 @@
 					{
 						"indexed": false,
 						"internalType": "string",
+						"name": "filename",
+						"type": "string"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "newContent",
+						"type": "string"
+					}
+				],
+				"name": "AppendedToFile",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "string",
 						"name": "dirName",
 						"type": "string"
 					}
@@ -59,9 +78,79 @@
 				"anonymous": false,
 				"inputs": [
 					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "filename",
+						"type": "string"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "content",
+						"type": "string"
+					}
+				],
+				"name": "FileCreated",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "filename",
+						"type": "string"
+					}
+				],
+				"name": "FileDeleted",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "filename",
+						"type": "string"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "newName",
+						"type": "string"
+					}
+				],
+				"name": "FileRenamed",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "filename",
+						"type": "string"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "newContent",
+						"type": "string"
+					}
+				],
+				"name": "FileWritten",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
 						"indexed": true,
 						"internalType": "address",
-						"name": "_addr",
+						"name": "addr",
 						"type": "address"
 					}
 				],
@@ -74,20 +163,7 @@
 					{
 						"indexed": true,
 						"internalType": "address",
-						"name": "_addr",
-						"type": "address"
-					}
-				],
-				"name": "UserRemoved",
-				"type": "event"
-			},
-			{
-				"anonymous": false,
-				"inputs": [
-					{
-						"indexed": true,
-						"internalType": "address",
-						"name": "_addr",
+						"name": "addr",
 						"type": "address"
 					},
 					{
@@ -97,7 +173,7 @@
 						"type": "string"
 					}
 				],
-				"name": "UsernameChanged",
+				"name": "UserRenamed",
 				"type": "event"
 			},
 			{
@@ -116,12 +192,17 @@
 			{
 				"inputs": [
 					{
-						"internalType": "uint256",
-						"name": "_dirId",
-						"type": "uint256"
+						"internalType": "string",
+						"name": "_filename",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_newContent",
+						"type": "string"
 					}
 				],
-				"name": "changeDir",
+				"name": "appendToFile",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -129,12 +210,12 @@
 			{
 				"inputs": [
 					{
-						"internalType": "string",
-						"name": "_newName",
-						"type": "string"
+						"internalType": "uint256",
+						"name": "_dirId",
+						"type": "uint256"
 					}
 				],
-				"name": "changeSelfUsername",
+				"name": "changeDir",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -171,6 +252,47 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_filename",
+						"type": "string"
+					}
+				],
+				"name": "deleteFile",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "driveOwner",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "addr",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "bool",
+						"name": "exists",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [],
 				"name": "listDir",
 				"outputs": [
@@ -184,14 +306,46 @@
 				"type": "function"
 			},
 			{
-				"inputs": [
+				"inputs": [],
+				"name": "numOfUsers",
+				"outputs": [
 					{
-						"internalType": "address",
-						"name": "_addr",
-						"type": "address"
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
 					}
 				],
-				"name": "removeUser",
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_filename",
+						"type": "string"
+					}
+				],
+				"name": "readFile",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_newName",
+						"type": "string"
+					}
+				],
+				"name": "renameDir",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -204,7 +358,7 @@
 						"type": "string"
 					}
 				],
-				"name": "renameDir",
+				"name": "renameSelf",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -223,32 +377,6 @@
 				"type": "function"
 			},
 			{
-				"inputs": [],
-				"name": "viewDriveOwner",
-				"outputs": [
-					{
-						"internalType": "address",
-						"name": "",
-						"type": "address"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "viewNumOfUsers",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
 				"inputs": [
 					{
 						"internalType": "address",
@@ -256,12 +384,34 @@
 						"type": "address"
 					}
 				],
-				"name": "viewUsername",
+				"name": "viewUserDetails",
 				"outputs": [
 					{
-						"internalType": "string",
+						"components": [
+							{
+								"internalType": "address",
+								"name": "addr",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "id",
+								"type": "uint256"
+							},
+							{
+								"internalType": "string",
+								"name": "name",
+								"type": "string"
+							},
+							{
+								"internalType": "bool",
+								"name": "exists",
+								"type": "bool"
+							}
+						],
+						"internalType": "struct UserSystem.User",
 						"name": "",
-						"type": "string"
+						"type": "tuple"
 					}
 				],
 				"stateMutability": "view",
@@ -278,6 +428,24 @@
 					}
 				],
 				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "_filename",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "_newContent",
+						"type": "string"
+					}
+				],
+				"name": "writeToFile",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			}
 		],
@@ -349,27 +517,27 @@
 			]
 		},
 		"contracts/FileStorage.sol": {
-			"keccak256": "0x0a6df2259ec314c6533e058ae28a3b2fd80e3adef608f1f8df7baf387d5b2389",
+			"keccak256": "0x8de04dc3d67414669e879933d4b3c450e3709151a702696133eabfd097ac449f",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://79e812da30d3887bf35ac79c4409d008ecb990015a23e314102423b94e400da3",
-				"dweb:/ipfs/QmWgN5ebAirRL4hgdVtyDoeG43fTRoWBbpGwNyQPzqAo2F"
+				"bzz-raw://6a9fc4e7c6999a13d12771a9dcf4c930ab86881bf0c9e3df686aadb563dcea9f",
+				"dweb:/ipfs/QmNdXtzGuhTvvETKj7QDr1iEpupuZQViW6m9g9e1T159fx"
 			]
 		},
 		"contracts/FileSystem.sol": {
-			"keccak256": "0x224cf2955b8828469c9e0d29454b135a4eb6e4635058d94dc93c99b6ab0d1aed",
+			"keccak256": "0x86bd250d468d8fb44592eae9cc15f63e09c13c3e4c50833b6e4f8da6d4c989b3",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://34b89f6134969afcc4cb4b0ecedc0ec23b049884916226d0298b8e557df294e8",
-				"dweb:/ipfs/QmXZfnuqioyj3DBLJ8WxMXerhgRqSDZRuUzo5Y25G3PtWh"
+				"bzz-raw://0671a9199505cc7e07f4c1486ca534a8ea78cf84f8fcb7cd47cfb517f630c65d",
+				"dweb:/ipfs/QmZm2zWSVaEZJ3gxGmUd5Jj3pbvo5Jts9s2Wyk9xXVnhqg"
 			]
 		},
 		"contracts/UserSystem.sol": {
-			"keccak256": "0x57fad4450189bc725e95b5ad1c2e7fa02424be7f213962ddfbdada130754bf8a",
+			"keccak256": "0x38ac9b4a690576efb400efc51667301a3546d866dd060d788a30a4d36802b9ab",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://88b835e58aac94bbdeba5420da6df30aa31749fb4646622551f45032eee2dc54",
-				"dweb:/ipfs/QmSAqFoWvZCnBZD9x9ffSwHRNyPrAVfbygwSa4t4NHmfLB"
+				"bzz-raw://7f15af1b9249fc2d91353ce29065c04934f696a6768fcb94b0ffb50689b33629",
+				"dweb:/ipfs/QmZtTMD5AE1CA6ggDAxi9T2pzmqwwnN5PBzGjQfQMA7KJF"
 			]
 		}
 	},

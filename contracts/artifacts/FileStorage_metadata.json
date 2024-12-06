@@ -6,95 +6,6 @@
 	"output": {
 		"abi": [
 			{
-				"anonymous": false,
-				"inputs": [
-					{
-						"indexed": false,
-						"internalType": "string",
-						"name": "filename",
-						"type": "string"
-					},
-					{
-						"indexed": false,
-						"internalType": "string",
-						"name": "newContent",
-						"type": "string"
-					}
-				],
-				"name": "AppendedToFile",
-				"type": "event"
-			},
-			{
-				"anonymous": false,
-				"inputs": [
-					{
-						"indexed": false,
-						"internalType": "string",
-						"name": "filename",
-						"type": "string"
-					},
-					{
-						"indexed": false,
-						"internalType": "string",
-						"name": "content",
-						"type": "string"
-					}
-				],
-				"name": "FileCreated",
-				"type": "event"
-			},
-			{
-				"anonymous": false,
-				"inputs": [
-					{
-						"indexed": false,
-						"internalType": "string",
-						"name": "filename",
-						"type": "string"
-					}
-				],
-				"name": "FileDeleted",
-				"type": "event"
-			},
-			{
-				"anonymous": false,
-				"inputs": [
-					{
-						"indexed": false,
-						"internalType": "string",
-						"name": "filename",
-						"type": "string"
-					},
-					{
-						"indexed": false,
-						"internalType": "string",
-						"name": "newContent",
-						"type": "string"
-					}
-				],
-				"name": "FileWritten",
-				"type": "event"
-			},
-			{
-				"anonymous": false,
-				"inputs": [
-					{
-						"indexed": false,
-						"internalType": "string",
-						"name": "filename",
-						"type": "string"
-					},
-					{
-						"indexed": false,
-						"internalType": "string",
-						"name": "newName",
-						"type": "string"
-					}
-				],
-				"name": "FilenameChanged",
-				"type": "event"
-			},
-			{
 				"inputs": [
 					{
 						"internalType": "string",
@@ -321,11 +232,11 @@
 	},
 	"sources": {
 		"contracts/FileStorage.sol": {
-			"keccak256": "0x9ea73cca407eb469bbfbd12b4a7071b9ce0b381ef2e162f3ee8398ce04316c88",
+			"keccak256": "0x4f3798833ef77d591b46959ea7033428b1fe15922806cf8441d9b1dfa89e8975",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://a5db5868c0d63cc9927d399387557048d793a5641d18aa04ada25b0274bfe0db",
-				"dweb:/ipfs/QmXmUC6ZgQdFUAAKjxVqDWmQcatCRNj87dVHgSmu643tRY"
+				"bzz-raw://2252477165d391289613c4d36d8e5497f73488fafa992a1009aeecfb969c81b5",
+				"dweb:/ipfs/QmWf8cKjzKNuJTdqjbpgy8LD6Hrwj2Ysz8R92u9M6j8QEC"
 			]
 		}
 	},
