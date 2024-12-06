@@ -11,7 +11,7 @@ const App = () => {
     const [contract, setContract] = useState(null);
     const [currentDir, setCurrentDir] = useState('');
 
-    const contractAddress = 'YOUR_CONTRACT_ADDRESS'; // Replace with your deployed contract address
+    const contractAddress = '0x5B38Da6a701c568545dCfcB03FcB875f56beddC4'; // Replace with your deployed contract address
 
     useEffect(() => {
         const init = async () => {
@@ -114,7 +114,6 @@ const App = () => {
                         multiple 
                         onChange={handleFileChange} 
                     />
-                    <button id="uploadButton" onClick={handleUpload}>Upload</button>
                 </div>
             </div> 
         </div>
