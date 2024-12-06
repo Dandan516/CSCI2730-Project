@@ -17,7 +17,7 @@ contract FileSystem is UserSystem {
         bool exists;
         uint parent;
         uint[] children;
-        FileStorage currentFiles;
+        FileStorage files;
     }
     
     uint globalFileCount;
@@ -36,7 +36,7 @@ contract FileSystem is UserSystem {
             exists: true,
             parent: 0,
             children: new uint[](0),
-            currentFiles: new FileStorage()
+            files: new FileStorage()
         });
         currentDir = root;
         dirs[0] = root;
@@ -46,6 +46,9 @@ contract FileSystem is UserSystem {
     event DirectoryCreated(string dirName);
     event DirectoryRenamed(string dirName);
     event DirectoryDeleted(string dirName);
+    event FileCreated(string filename, string content);
+    event FileEdited(string filename, string content);
+    event FileDeleted(string filename);
 
     // check if the directory name is available in the parent directory
     modifier dirNameAvailable(string memory _newName) {
@@ -74,7 +77,6 @@ contract FileSystem is UserSystem {
         require(globalDirCount < MAX_GLOBAL_DIRS, "Exceeded global directory limit");
         _;
     }
-
     
     function createDir(string memory _dirName) notExceedGlobalFileLimit external {
         dirs[globalDirCount] = Directory({
@@ -83,7 +85,7 @@ contract FileSystem is UserSystem {
             exists: true,
             parent: currentDir.id,
             children: new uint[](0),
-            currentFiles: new FileStorage()
+            files: new FileStorage()
         });
         dirs[currentDir.id].children.push(globalDirCount);
         currentDir = dirs[currentDir.id];
@@ -105,7 +107,23 @@ contract FileSystem is UserSystem {
 
     // create file using FileStorage.createFile
     function createFile(string memory _filename, string memory _content) external {
-        dirs[currentDir.id].currentFiles.createFile(_filename, _content);
+        currentDir.files.createFile(_filename, _content);
+        dirs[currentDir.id] = currentDir;
+        emit FileCreated(_filename, _content);
+    }
+
+    // append to file using FileStorage.readFile
+    function appendToFile(string memory _filename) external returns(string memory) {
+        currentDir.files.readFile(_filename);
+        dirs[currentDir.id] = currentDir;
+    }
+
+
+
+    // read file using FileStorage.readFile
+    function readFile(string memory _filename) external view returns(string memory) {
+        currentDir.files.readFile(_filename);
+        dirs[currentDir.id] = currentDir;
     }
 
     // list directory
@@ -114,7 +132,7 @@ contract FileSystem is UserSystem {
         for (uint i = 0; i < currentDir.children.length; i++) {
             childDirList[i] = dirs[currentDir.children[i]].dirName;
         }
-        string[] memory childFileList = currentDir.currentFiles.getFileList();
+        string[] memory childFileList = currentDir.files.getFileList();
         return [childDirList, childFileList];
     }
 
