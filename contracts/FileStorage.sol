@@ -20,14 +20,9 @@ contract FileStorage {
         mapping(address => uint8) mode;
     }
 
-    uint16 fileCount = 0;
+    uint public fileCount = 0;
     mapping(string => File) public files;
     string[] private fileList;
-
-    modifier onlyFileOwner(string memory _filename) {
-        require(msg.sender == files[_filename].fileOwner, "You are not the file owner");
-        _;
-    }
 
     modifier fileExists(string memory _filename) {
         require(files[_filename].exists, "File does not exist");
@@ -40,7 +35,7 @@ contract FileStorage {
     }
 
     // Create a file
-    function createFile(string memory _filename, string memory _content) notExceedFileLimit external {
+    function createFile(string memory _filename, address _addr, string memory _content) external notExceedFileLimit {
         require(bytes(_filename).length > 0, "Filename cannot be empty");
         require(!files[_filename].exists, "File already exists");
 
@@ -48,8 +43,8 @@ contract FileStorage {
         newFile.filename = _filename;
         newFile.content = _content;
         newFile.exists = true;
-        newFile.fileOwner = msg.sender;
-        newFile.mode[msg.sender] = 3;
+        newFile.fileOwner = _addr;
+        newFile.mode[_addr] = 3;
 
         // Add to File list
         fileCount++; 
@@ -57,31 +52,28 @@ contract FileStorage {
     }
 
     // Rename a file
-    function renameFile(string memory _oldName, string memory _newName) external onlyFileOwner(_oldName) fileExists(_oldName) {
+    function renameFile(string memory _oldName, string memory _newName) external fileExists(_oldName) {
         require(!files[_newName].exists, "Name not available");
-        File storage newFile = files[_oldName];
+        File storage file = files[_oldName];
         delete files[_oldName];
-        newFile.filename = _newName;
-
-        
+        file.filename = _newName;
     }
 
     // Append to a file
     function appendToFile(string memory _filename, string memory _newContent) external fileExists(_filename) {
-        require(files[_filename].mode[msg.sender] >= 2, "No append access");
+        // require(files[_filename].mode[msg.sender] >= 2, "No append access");
         files[_filename].content = string.concat(files[_filename].content, "\n", _newContent);
     }
 
     // Overwrite a file
     function writeFile(string memory _filename, string memory _newContent) external fileExists(_filename) {
-        require(files[_filename].mode[msg.sender] == 3, "No write access");
+        // require(files[_filename].mode[msg.sender] == 3, "No write access");
         files[_filename].content = _newContent;
     }
 
     // Delete a file
-    function deleteFile(string memory _filename) external onlyFileOwner(_filename) fileExists(_filename) {
+    function deleteFile(string memory _filename) external fileExists(_filename) {
         delete files[_filename];
-
         // Remove from file list
         for (uint i = 0; i < fileList.length; i++) {
             if (keccak256(abi.encodePacked(fileList[i])) == keccak256(abi.encodePacked(_filename))) {
@@ -94,14 +86,14 @@ contract FileStorage {
     }
 
     // change file permission mode of the address
-    function changeFilePermission(string memory _filename, address _addr, uint8 _mode) external onlyFileOwner(_filename) fileExists(_filename) {
+    function changeFilePermission(string memory _filename, address _addr, uint8 _mode) external fileExists(_filename) {
         require(_mode >= 0 && _mode <= 3, "Invalid permission mode");
         files[_filename].mode[_addr] = _mode;
     }
 
     // Read a file by filename
     function readFile(string memory _filename) external view fileExists(_filename) returns (string memory) {
-        require(files[_filename].mode[msg.sender] >= 1, "No Read access");
+        // require(files[_filename].mode[msg.sender] >= 1, "No Read access");
         return files[_filename].content;
     }
 
@@ -115,8 +107,12 @@ contract FileStorage {
         return fileList;
     }
 
-    function returnmode (string memory _filename, address _addr) external view fileExists(_filename) returns (uint8) {  
+    function getMode(string memory _filename, address _addr) external view fileExists(_filename) returns (uint8) {  
         return files[_filename].mode[_addr];
+    }
+
+    function getFileOwner(string memory _filename) external view fileExists(_filename) returns (address) {
+        return files[_filename].fileOwner;
     }
     
 }

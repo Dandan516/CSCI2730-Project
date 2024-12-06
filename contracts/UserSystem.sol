@@ -13,17 +13,16 @@ contract UserSystem {
     }
 
     User public driveOwner;
-    User public currentUser;
+    //User public currentUser;
     uint public userCount;
     uint internal idCount;
-    mapping(address => User) public users;
-    mapping(uint => address) internal byId;
-    mapping(string => address) internal byName;
+    mapping(address => User) users;
+    mapping(uint => address) internal userById;
+    mapping(string => address) internal userByName;
 
     event UserAdded(address indexed addr);
     event UserRenamed(address indexed addr, string newName);
-    event UserRemoved(address indexed _addr);
-
+    event UserRemoved(address indexed addr);
 
     modifier onlyDriveOwner() {
         require(msg.sender == driveOwner.addr, "You are not the drive owner");
@@ -43,8 +42,8 @@ contract UserSystem {
             exists: true
         });
         users[msg.sender] = driveOwner;
-        byId[driveOwner.id] = driveOwner.addr;
-        byName[driveOwner.username] = driveOwner.addr;
+        userById[driveOwner.id] = driveOwner.addr;
+        userByName[driveOwner.username] = driveOwner.addr;
         userCount = 1;
         idCount = 1;
     }
@@ -60,25 +59,25 @@ contract UserSystem {
             exists: true
         });
         users[_addr] = newUser;
-        byId[newUser.id] = newUser.addr;
-        byName[newUser.username] = newUser.addr;
+        userById[newUser.id] = newUser.addr;
+        userByName[newUser.username] = newUser.addr;
         userCount += 1;
         idCount += 1;
         emit UserAdded(_addr);
     }
 
     function renameSelf(string memory _newName) external {
-        require(byName[_newName] == address(0), "Name not available");
+        require(userByName[_newName] == address(0), "Name not available");
         string memory _oldName = users[msg.sender].username;
         users[msg.sender].username = _newName;
-        delete byName[_oldName];
+        delete userByName[_oldName];
         emit UserRenamed(msg.sender, _newName);
     }
 
-    function removeUser(address _addr) onlyDriveOwner userExists(_addr) external {
+    function removeUser(address _addr) external onlyDriveOwner() userExists(_addr) {
         require(_addr != msg.sender, "Cannot remove owner");
-        delete byId[users[_addr].id];
-        delete byName[users[_addr].username];
+        delete userById[users[_addr].id];
+        delete userByName[users[_addr].username];
         delete users[_addr];
         userCount -= 1;
         emit UserRemoved(_addr);
@@ -87,9 +86,13 @@ contract UserSystem {
     function viewUserList() external view returns(User[] memory) {
         User[] memory result = new User[](userCount);
         for (uint i = 0; i < userCount; i++) {
-            result[i] = users[byId[i]];
+            result[i] = users[userById[i]];
         }
         return result;
+    }
+
+    function whoami() external view returns (string memory) {
+        return users[msg.sender].username;
     }
 
 }

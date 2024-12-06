@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Web3 from 'web3';
 import './App.css';
 
-import FileSystem from './artifacts/FileSystem.json'; 
+import ShareDrive from './artifacts/ShareDrive.json'; 
 
 const App = () => {
     const [files, setFiles] = useState([]);
@@ -23,7 +23,7 @@ const App = () => {
             await window.ethereum.request({ method: "eth_requestAccounts" });
 
             // Create a contract instance
-            const contractInstance = new web3Instance.eth.Contract(FileSystem.abi, contractAddress);
+            const contractInstance = new web3Instance.eth.Contract(ShareDrive.abi, contractAddress);
             setContract(contractInstance);
 
             // Load files on component mount
