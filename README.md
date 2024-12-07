@@ -18,7 +18,7 @@
 - removeUser()  
 - viewUserList()  
 
-# Reminder
+## Reminder
 Apply optimization to the solidity compiler before compiling the code
 
 ![image](https://github.com/user-attachments/assets/84943a9d-af8c-4009-ba4b-4408f7a62dcb)  
