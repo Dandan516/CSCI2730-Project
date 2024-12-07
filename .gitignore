@@ -1,3 +1,4 @@
 /contracts/artifacts/
 /.deps
 /.states
+/.deploy
