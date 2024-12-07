@@ -27,5 +27,6 @@ Contract is already deployed to Sepolia testnet, at address 0xDbfEAAfB19421cA0AD
 No need to deploy again unless changes are made to the contracts  
 
 How to run web app:
-1.    open terminal on /sharedriveapp
-2.    run "npm run start", webapp should open in browser
+1.  Install Node.js (<https://nodejs.org/en>)
+2.  Open terminal on /sharedriveapp
+3.  Run "npm run start", webapp should open in browser
