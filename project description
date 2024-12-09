@@ -34,7 +34,7 @@ changeFilePermission() : Change to mode of access ( read, read & append , read, 
 readFile()             : read a file
 viewFilePermisson()    : return a mode ( read, read & append , read, append & write )
 listFile()             : return a list of file with filename
-getMode()              : 
+getMode()              : return the mode number
 getFileOwner           : return the owner address
 
 
@@ -84,7 +84,7 @@ createDir()             : create directory
 renameDir()             : rename current
 deleteDir()             : delete current directory and navigate back to parent directory
 goUp()                  : Navigate to parent directory
-goDown()                : Navigate to a dedicated parent directory
+goDown()                : Navigate to a dedicated child directory
 createFile()            : Define in FileStorage
 renameFile()            : Define in FileStorage
 appendToFile()          : Define in FileStorage
