@@ -1,0 +1,93 @@
+Project Description: 
+
+The project is about implementing a web-based Dapps that served as file system 
+
+Smart contracts:
+
+FileStorage.sol
+ShareDrive.sol
+UserSystem.sol
+
+code description:
+
+FileStorage.sol included a file objects and define a file in the file system:
+
+Object:
+struct File{
+	string filename;
+	string content;
+	bool exist;
+	address fileOwner;
+}
+
+Functions:
+createFile() : create a file with file name, owner, content
+renameFile() : rename file
+appendToFile() : Add new content to file
+writeFile() : Rewrite the file
+deleteFile() : Delete the file
+changeFilePermission() : Change to mode of access ( read, read & append , read, append & write)
+readFile(): read a file
+viewFilePermisson() : return a mode description
+listFile() : return a list of file with filename
+getMode() : 
+getFileOwner : return the owner address
+
+UserSystem.sol define a user in the file system and define the drive owner of the file system:
+
+struct User {
+	address addr;
+	uint id;
+	string username;
+	bool exists;
+}
+
+Functions:
+
+addUser() : A whitelist function that grant permission by the
+                   address
+renameSelf() : rename a user 
+removeUser : remove a user by address, can only be done by
+                       Owner
+viewUserList : return a list of users access to the drive
+whoami : return the username of the caller
+
+
+ShareDrive.sol inherited UserSystem, define the share drive and the action user can perform inside a File system:
+
+struct Directory{
+	string dirName;
+	uint id;
+	bool exists;
+	uint parent;
+  uint[] children;
+  FileStorage currentFiles
+}
+
+
+
+Functions: 
+createDir() : create directory
+renameDir() : rename current
+deleteDir() : delete current directory and navigate back to parent directory
+goUp()      : Navigate to parent directory
+goDown()    : Navigate to a dedicated parent directory
+createFile(): Define in FileStorage
+renameFile() : Define in FileStorage
+appendToFile() : Define in FileStorage
+writetoFile() : Define in FileStorage
+deleteFile() :  Define in FileStorage
+readFile()   : Define in FileStorage
+listDir()    : return All child directory and file 
+viewCurreentDirName() : return the directory name
+changeFilePermission() : change the permission of access(mode) of file
+viewFilePermssion : return the permission of access of a user
+changeDir()  : change to other directory
+
+
+
+
+
+
+
+
