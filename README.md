@@ -10,7 +10,7 @@ UserSystem.sol
 
 Code description:
 
-## FileStorage.sol included a file objects and define a file in the file system:
+## FileStorage.sol
 
 struct File{
 	string filename;
@@ -39,7 +39,7 @@ getFileOwner           : return the owner address
 
 
 
-## UserSystem.sol define a user in the file system and define the drive owner of the file system:
+## UserSystem.sol
 
 struct User {
 	address addr;
@@ -61,7 +61,7 @@ viewUserList()    : return a list of users access to the drive
 whoami()          : return the username of the caller
 
 
-## ShareDrive.sol inherited UserSystem, define the share drive and the action user can perform inside a File system:
+## ShareDrive.sol
 
 struct Directory{
 	string dirName;
