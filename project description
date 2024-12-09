@@ -80,22 +80,22 @@ notExceedDirLimit()        : check whether total number of directory exceed the 
 
 Functions: 
 
-createDir() : create directory
-renameDir() : rename current
-deleteDir() : delete current directory and navigate back to parent directory
-goUp()      : Navigate to parent directory
-goDown()    : Navigate to a dedicated parent directory
-createFile(): Define in FileStorage
-renameFile() : Define in FileStorage
-appendToFile() : Define in FileStorage
-writetoFile() : Define in FileStorage
-deleteFile() :  Define in FileStorage, only file owner can delete it
-readFile()   : Define in FileStorage
-listDir()    : return All child directory and file 
-viewCurreentDirName() : return the directory name
-changeFilePermission() : change the permission of access(mode) of file, only file owner can change it
-viewFilePermssion : return the permission of access of a user
-changeDir()  : change to other directory
+createDir()             : create directory
+renameDir()             : rename current
+deleteDir()             : delete current directory and navigate back to parent directory
+goUp()                  : Navigate to parent directory
+goDown()                : Navigate to a dedicated parent directory
+createFile()            : Define in FileStorage
+renameFile()            : Define in FileStorage
+appendToFile()          : Define in FileStorage
+writetoFile()           : Define in FileStorage
+deleteFile()            : Define in FileStorage, only file owner can delete it
+readFile()              : Define in FileStorage
+listDir()               : return All child directory and file 
+viewCurreentDirName()   : return the directory name
+changeFilePermission()  : change the permission of access(mode) of file, only file owner can change it
+viewFilePermssion       : return the permission of access of a user
+changeDir()             : change to other directory
 
 
 
