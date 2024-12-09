@@ -126,16 +126,18 @@ contract ShareDrive is UserSystem {
     }
 
     // rename current directory
-    function renameDir(string memory _newName) dirNameValid(_newName) external {  
-        require(currentDir.id != 0, "Cannot rename root");
+    function renameDir(string memory _newName) dirNameValid(_newName) external {
+        require(currentDir.id != 1, "Cannot rename root");
         string memory _oldName = dirs[currentDir.id].dirName;
         dirs[currentDir.id].dirName = _newName;
+        currentDir = dirs[currentDir.id];
         emit DirectoryRenamed(_oldName, _newName);
     }
 
     // delete current directory, go back to parent
     function deleteDir() external {
-        require(currentDir.id != 0, "Cannot delete root");
+        require(currentDir.id != 1, "Cannot delete root");
+        dirs[currentDir.id].exists = false;
         delete dirs[currentDir.id];
         delete idByName[currentDir.dirName];
         changeDir(currentDir.parent);
@@ -216,12 +218,21 @@ contract ShareDrive is UserSystem {
 
     // list directory
     function listDir() external view returns(string[][2] memory) {
-        string[] memory childDirList = new string[](currentDir.children.length);
+        string[] memory childDirList1 = new string[](currentDir.children.length);
+        // uint invalidDirCount = 0;
+        uint j = 0;
         for (uint i = 0; i < currentDir.children.length; i++) {
-            childDirList[i] = string.concat(dirs[currentDir.children[i]].dirName, '/');
+            if (dirs[currentDir.children[i]].exists == true) {
+                childDirList1[j] = (string.concat(dirs[currentDir.children[i]].dirName, '/'));
+                j++;
+            }   
+        }
+        string[] memory childDirList2 = new string[](j);
+        for (uint i = 0; i < j; i++) {
+            childDirList2[i] = childDirList1[i];
         }
         string[] memory childFileList = currentDir.currentFiles.listFiles();
-        return [childDirList, childFileList];
+        return [childDirList2, childFileList];
     }
 
     function viewCurrentDirName() external view returns(string memory) {
