@@ -19,11 +19,12 @@ struct File {
 	address fileOwner;  
 }  
 
-modifier:
+### modifier:  
+
 fileExists()           : check whether the filename exist or not  
 notExceedFileLimit()   : check whether the total number of file exceed the limit or not (50)  
 
-Functions:  
+### Functions:  
 
 createFile()           : create a file with file name, owner, content  
 renameFile()           : rename file  
@@ -48,11 +49,12 @@ struct User {
 	bool exists;  
 }  
 
-modifier:  
+### modifier:
+
 onlyDriveOwner  : check whether the function caller is performed by owner  
 userExists      : check whether the address exist  
 
-Functions:  
+### Functions: 
 
 addUser()         : A whitelist function that grant permission by the address  
 renameSelf()      : rename a user   
@@ -72,13 +74,14 @@ struct Directory {
         FileStorage currentFiles;  
 }
 
-modifier:  
+### modifier:  
+
 dirNameValid()             : check whether a directory is valid (unique name, limited length, alphanumeric characters)  
 onlyFileOwner()            : check whether the function caller is performed by owner  
 notExceedGlobalFileLimit() : check whether total number of file exceed the limit or not (1000)  
 notExceedDirLimit()        : check whether total number of directory exceed the limit or not (10)  
 
-Functions:   
+### Functions:   
 
 createDir()             : create directory  
 renameDir()             : rename current  
