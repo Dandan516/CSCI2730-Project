@@ -17,6 +17,7 @@ contract FileStorage {
         string content;
         bool exists;
         address fileOwner;
+        address[] whitelist;
         mapping(address => uint8) mode;
     }
 
@@ -35,7 +36,7 @@ contract FileStorage {
     }
 
     // Create a file
-    function createFile(string memory _filename, address _addr, string memory _content) external notExceedFileLimit {
+    function createFile(string memory _filename, address _addr, string memory _content) public notExceedFileLimit {
         require(bytes(_filename).length > 0, "Filename cannot be empty");
         require(!files[_filename].exists, "File already exists");
 
@@ -44,6 +45,7 @@ contract FileStorage {
         newFile.content = _content;
         newFile.exists = true;
         newFile.fileOwner = _addr;
+        newFile.whitelist = new address[](0);
         newFile.mode[_addr] = 3;
 
         // Add to File list
@@ -54,9 +56,13 @@ contract FileStorage {
     // Rename a file
     function renameFile(string memory _oldName, string memory _newName) external fileExists(_oldName) {
         require(!files[_newName].exists, "Name not available");
-        File storage file = files[_oldName];
-        delete files[_oldName];
-        file.filename = _newName;
+        createFile(_newName, files[_oldName].fileOwner, files[_oldName].content);
+        for (uint i = 0; i < files[_oldName].whitelist.length; i++) {
+            address x = files[_oldName].whitelist[i];
+            files[_newName].whitelist.push(x);
+            files[_newName].mode[x] = files[_oldName].mode[x];
+        }
+        deleteFile(_oldName);
     }
 
     // Append to a file
@@ -72,7 +78,8 @@ contract FileStorage {
     }
 
     // Delete a file
-    function deleteFile(string memory _filename) external fileExists(_filename) {
+    function deleteFile(string memory _filename) public fileExists(_filename) {
+        files[_filename].exists = false;
         delete files[_filename];
         // Remove from file list
         for (uint i = 0; i < fileList.length; i++) {
