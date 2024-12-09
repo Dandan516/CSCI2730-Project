@@ -130,6 +130,7 @@ contract ShareDrive is UserSystem {
         require(currentDir.id != 0, "Cannot rename root");
         string memory _oldName = dirs[currentDir.id].dirName;
         dirs[currentDir.id].dirName = _newName;
+        currentDir = dirs[currentDir.id];
         emit DirectoryRenamed(_oldName, _newName);
     }
 
